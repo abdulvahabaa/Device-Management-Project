@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 
   const Production = ({isAdmin=false}) => {
     const token = useSelector((state) => state.userState.token);
-    
+    const adminToken = useSelector((state)=>state.adminState.adminToken)
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
   
@@ -20,10 +20,11 @@ import { useSelector } from "react-redux";
     const [rows, setRows] = useState([]);
   
     useEffect(() => {
+      const accessToken = token || adminToken
       axios
         .get(`${BASE_URL}/device/production`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         })
         .then((res) => {
@@ -53,13 +54,14 @@ import { useSelector } from "react-redux";
     }, [production]);
 
     const forwardtoLive = async (deviceId) => {
+
       console.log(deviceId)
       try {
         const response = await axios.patch(
           `${BASE_URL}/device/tolive`,
           { deviceId },
           {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${adminToken}` },
           }
         );
     

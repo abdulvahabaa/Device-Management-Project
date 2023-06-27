@@ -12,9 +12,9 @@ import axios from "axios";
 const Dammageinfo = ({ isAdmin=false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const token = useSelector((state) => state.userState.token);
+  // const token = useSelector((state) => state.userState.token);
   const adminToken =useSelector((state)=>state.adminState.adminToken)
-  const [dammage, setDammge] = useState([]);
+  const [dammage, setDammage] = useState([]);
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
@@ -26,19 +26,19 @@ const Dammageinfo = ({ isAdmin=false }) => {
       })
       .then((res) => {
         console.log(res);
-        setDammge(res.data);
+        setDammage(res.data);
       })
       .catch((error) => {
         console.error(error);
       });
 
-      
+     
   }, [adminToken]);
 
 
 
   useEffect(() => {
-      const setDammge = () => {
+      const setDammage = () => {
         const newRows = dammage.map((dammage) => ({
           
           // id: `${dammage._id}-${index}`,
@@ -70,7 +70,7 @@ const Dammageinfo = ({ isAdmin=false }) => {
         setRows(newRows);
       };
     
-      setDammge();
+      setDammage();
     }, [dammage]);
 
   const columns = [
@@ -130,42 +130,42 @@ const Dammageinfo = ({ isAdmin=false }) => {
     //   ),
       
     // },
-    {
-      field: "statuss",
-      headerName: "Ready",
-      flex: 1,
-      renderCell: (params) => (
-        <Button onClick={() => {
-          forwardtoProduction(params.row.deviceId)
+    // {
+    //   field: "statuss",
+    //   headerName: "Ready",
+    //   flex: 1,
+    //   renderCell: (params) => (
+    //     <Button onClick={() => {
+    //       forwardtoProduction(params.row.deviceId)
           
-        }} variant="contained" sx={{color:"yellow"}}>
-         {params.row.status === true ? "notworked" : "Production"}
-        </Button>
+    //     }} variant="contained" sx={{color:"yellow"}}>
+    //      {params.row.status === true ? "notworked" : "Production"}
+    //     </Button>
         
-      ),
+    //   ),
       
-    },
+    // },
   ];
 
-  const forwardtoProduction = async (deviceId) => {
-    console.log(deviceId)
-    try {
-      const response = await axios.patch(
-        `${BASE_URL}/device/toproduction`,
-        { deviceId },
-        {
-          headers: { Authorization: `Bearer ${adminToken}` },
-        }
-      );
+  // const forwardtoProduction = async (deviceId) => {
+  //   console.log(deviceId)
+  //   try {
+  //     const response = await axios.patch(
+  //       `${BASE_URL}/device/toproduction`,
+  //       { deviceId },
+  //       {
+  //         headers: { Authorization: `Bearer ${adminToken}` },
+  //       }
+  //     );
   
-      const data = response.data;
-      console.log(data);
-      // setReports(data);
-      // setLoading(!loading);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     const data = response.data;
+  //     console.log(data);
+  //     // setReports(data);
+  //     // setLoading(!loading);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   // const forwardtoDammage = async (deviceId) => {
   //   console.log(deviceId)

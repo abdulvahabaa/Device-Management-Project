@@ -97,21 +97,21 @@ const Maintenance = ({ isAdmin=false }) => {
       flex: 3,
     },
   
-    {
-      field: "dss",
-      headerName: "Delete",
-      flex: 1,
-      renderCell: (params) => (
-        <Button onClick={() => {
-          deleteDevice(params.row.deviceId)
+    // {
+    //   field: "dss",
+    //   headerName: "Delete",
+    //   flex: 1,
+    //   renderCell: (params) => (
+    //     <Button onClick={() => {
+    //       deleteDevice(params.row.deviceId)
           
-        }} variant="contained" sx={{color:"red"}}>
-         {params.row.status === true ? "notworked" : "DELETE"}
-        </Button>
+    //     }} variant="contained" sx={{color:"red"}}>
+    //      {params.row.status === true ? "notworked" : "DELETE"}
+    //     </Button>
         
-      ),
+    //   ),
       
-    },
+    // },
     {
       field: "status",
       headerName: "Dammage Report",

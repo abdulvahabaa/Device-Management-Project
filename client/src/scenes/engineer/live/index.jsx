@@ -18,10 +18,8 @@ const Live = () => {
 
   useEffect(() => {
     const accessToken = token || adminToken
-    console.log("adminToken",adminToken)
-    console.log("accessToken",accessToken)
-    
-
+    // console.log("adminToken",adminToken)
+    // console.log("accessToken",accessToken)
 
     axios
       .get(`${BASE_URL}/device/live`, {

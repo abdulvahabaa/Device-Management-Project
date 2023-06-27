@@ -77,12 +77,12 @@ function InitialCheackModal({
   };
 
   const forwardToProducton = async()=>{
-    const id = deviceId 
+    const data = {deviceId} 
     console.log("deviceId",deviceId)
 
     try {
 
-      await axios.patch(`${BASE_URL}/device/toproduction`, deviceId, {
+      await axios.patch(`${BASE_URL}/device/toproduction`, data, {
         headers: { Authorization: `Bearer ${token}` },
       });
       

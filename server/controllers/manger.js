@@ -26,7 +26,7 @@ export const adminLogin = async (req, res) => {
 };
 
 export const getDammageinfo = async (req, res) => {
-  console.lgo("called dammage info>>>>")
+  // console.lgo("called dammage info>>>>")
 
   try {
     const device = await Device.find({ status: "dammage" });
