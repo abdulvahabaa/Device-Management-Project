@@ -31,27 +31,28 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-      const { email, password } = req.body;
+    const { email, password } = req.body;
 
-      let engineer = await Engineer.findOne({ email: email });
+    let engineer = await Engineer.findOne({ email: email });
 
-      if (!engineer)
-          return res.status(400).json({ msg: "Engineer does not exist." });
+    if (!engineer)
+      return res.status(400).json({ msg: "Engineer does not exist." });
 
-      const isMatch = await bcrypt.compare(password, engineer.password);
-      if (!isMatch)
-          return res.status(400).json({ msg: "Invalid Engineer Credentials..." });
+    const isMatch = await bcrypt.compare(password, engineer.password);
+    if (!isMatch)
+      return res.status(400).json({ msg: "Invalid Engineer Credentials..." });
 
-      const token = jwt.sign({ id: engineer._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: engineer._id }, process.env.JWT_SECRET, {
+      expiresIn: '6h' // Set the expiry time for 1 hour (can be adjusted as needed)
+    });
 
+    // Remove password field from the engineer object
+    engineer = await Engineer.findOne({ email: email }).select("-password");
 
-      // Remove password field from the engineer object
-      engineer = await Engineer.findOne({ email: email }).select("-password");
-
-      res.status(200).json({ token, engineer });
+    res.status(200).json({ token, engineer });
   } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: "Internal server error" });
+    console.error(err);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
