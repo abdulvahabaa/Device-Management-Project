@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
+// import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
@@ -20,11 +20,11 @@ function EditDeviceModal({
   deviceNumber,
   internalNumber,
   isEdit = false,
-  handleRefresh
+  handleRefresh,
   // postUserId,
 }) {
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  // const handleOpen = () => setOpen(true);
   // const handleClose = () => setOpen(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -42,48 +42,43 @@ function EditDeviceModal({
     setOpen(false);
   };
 
-
-
-
   const handleDevice = async () => {
     try {
-    const formData = new FormData();
-    // formData.append("userId", _id);
-    formData.append("deviceId", deviceId);
+      const formData = new FormData();
+      formData.append("deviceId", deviceId);
+      formData.append("deviceNumber", deviceNumb);
+      formData.append("deviceName", deviceNam);
+      formData.append("internalNumber", internalNumb);
 
-    formData.append("deviceNumber", deviceNumb);
-    formData.append("deviceName", deviceNam);
-    formData.append("internalNumber", internalNumb);
-    const Data={deviceId,deviceNumber:deviceNumb,deviceName:deviceNam,internalNumber:internalNumb}
+      const Data = {
+        deviceId,
+        deviceNumber: deviceNumb,
+        deviceName: deviceNam,
+        internalNumber: internalNumb,
+      };
 
-    console.log("formData>>>",Data)
+      console.log("formData>>>", Data);
 
-
-   
       const response = await axios.put(`${BASE_URL}/device/edit`, Data, {
         headers: { Authorization: `Bearer ${token}` },
       });
-    
+
       const posts = response.data;
       console.log(posts);
-      handleRefresh()
+      handleRefresh();
     } catch (error) {
       console.error(error);
-
     }
     // setPost("");
   };
 
   return (
     <div>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open responsive dialog
-      </Button> */}
+     
       <Dialog
         fullScreen={fullScreen}
         open={open}
         onClose={() => {
-          
           setIsUpdate(false);
           handleClose();
         }}

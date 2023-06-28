@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import BASE_URL from "utils/BASE_URL";
 import axios from "axios";
 
-const Maintenance = ({ isAdmin=false }) => {
+const Maintenance = ({ isAdmin = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const token = useSelector((state) => state.userState.token);
@@ -32,47 +32,44 @@ const Maintenance = ({ isAdmin=false }) => {
       });
   }, [token]);
 
-
-
   useEffect(() => {
-      const setMaintenance = () => {
-        const newRows = maintenance.map((maintenance) => ({
-          
-          // id: `${maintenance._id}-${index}`,
-          deviceId:maintenance._id,
-          deviceName: maintenance.deviceName,
-          deviceNumber: maintenance.deviceNumber,
-          internalNumber: maintenance.internalNumber,
-          engineer: maintenance.engineer,
-          complaints: maintenance.checks.map((check) => {
+    const setMaintenance = () => {
+      const newRows = maintenance.map((maintenance) => ({
+        // id: `${maintenance._id}-${index}`,
+        deviceId: maintenance._id,
+        deviceName: maintenance.deviceName,
+        deviceNumber: maintenance.deviceNumber,
+        internalNumber: maintenance.internalNumber,
+        engineer: maintenance.engineer,
+        complaints: maintenance.checks
+          .map((check) => {
             const complaints = [];
-            if (check.mic === 'failed') {
-              complaints.push('Mic');
+            if (check.mic === "failed") {
+              complaints.push("Mic");
             }
-            if (check.camera === 'failed') {
-              complaints.push('Camera');
+            if (check.camera === "failed") {
+              complaints.push("Camera");
             }
-            if (check.sensor === 'failed') {
-              complaints.push('Sensor');
+            if (check.sensor === "failed") {
+              complaints.push("Sensor");
             }
             if (check.review) {
               complaints.push(`Review: ${check.review}`);
             }
 
-            
-            return complaints.join(', ');
+            return complaints.join(", ");
           })
-          .join(', '),
+          .join(", "),
       }));
-        setRows(newRows);
-      };
-    
-      setMaintenance();
-    }, [maintenance]);
+      setRows(newRows);
+    };
+
+    setMaintenance();
+  }, [maintenance]);
 
   const columns = [
     // { field: "id", headerName: "ID", flex: 0.5 },
-   
+
     {
       field: "deviceName",
       headerName: "Name",
@@ -82,7 +79,7 @@ const Maintenance = ({ isAdmin=false }) => {
     {
       field: "internalNumber",
       headerName: "Internal Number",
-      flex:1,
+      flex: 1,
       headerAlign: "left",
       align: "left",
     },
@@ -96,7 +93,7 @@ const Maintenance = ({ isAdmin=false }) => {
       headerName: "Complaints",
       flex: 3,
     },
-  
+
     // {
     //   field: "dss",
     //   headerName: "Delete",
@@ -104,48 +101,50 @@ const Maintenance = ({ isAdmin=false }) => {
     //   renderCell: (params) => (
     //     <Button onClick={() => {
     //       deleteDevice(params.row.deviceId)
-          
+
     //     }} variant="contained" sx={{color:"red"}}>
     //      {params.row.status === true ? "notworked" : "DELETE"}
     //     </Button>
-        
+
     //   ),
-      
+
     // },
     {
       field: "status",
       headerName: "Dammage Report",
       flex: 1,
       renderCell: (params) => (
-        <Button onClick={() => {
-          forwardtoDammage(params.row.deviceId)
-          
-        }} variant="contained" sx={{color:"red"}}>
-         {params.row.status === true ? "notworked" : "DAMMAGE"}
+        <Button
+          onClick={() => {
+            forwardtoDammage(params.row.deviceId);
+          }}
+          variant="contained"
+          sx={{ color: "red" }}
+        >
+          {params.row.status === true ? "notworked" : "DAMMAGE"}
         </Button>
-        
       ),
-      
     },
     {
       field: "statuss",
       headerName: "Ready",
       flex: 1,
       renderCell: (params) => (
-        <Button onClick={() => {
-          forwardtoProduction(params.row.deviceId)
-          
-        }} variant="contained" sx={{color:"yellow"}}>
-         {params.row.status === true ? "notworked" : "Production"}
+        <Button
+          onClick={() => {
+            forwardtoProduction(params.row.deviceId);
+          }}
+          variant="contained"
+          sx={{ color: "yellow" }}
+        >
+          {params.row.status === true ? "notworked" : "Production"}
         </Button>
-        
       ),
-      
     },
   ];
 
   const forwardtoProduction = async (deviceId) => {
-    console.log(deviceId)
+    console.log(deviceId);
     try {
       const response = await axios.patch(
         `${BASE_URL}/device/toproduction`,
@@ -154,7 +153,7 @@ const Maintenance = ({ isAdmin=false }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-  
+
       const data = response.data;
       console.log(data);
       // setReports(data);
@@ -165,7 +164,7 @@ const Maintenance = ({ isAdmin=false }) => {
   };
 
   const forwardtoDammage = async (deviceId) => {
-    console.log(deviceId)
+    console.log(deviceId);
     try {
       const response = await axios.patch(
         `${BASE_URL}/device/todammage`,
@@ -174,7 +173,7 @@ const Maintenance = ({ isAdmin=false }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-  
+
       const data = response.data;
       console.log(data);
       // setReports(data);
@@ -184,28 +183,25 @@ const Maintenance = ({ isAdmin=false }) => {
     }
   };
 
+  // const deleteDevice = async (deviceId) => {
+  //   console.log("deviceId", deviceId);
+  //   try {
+  //     const response = await axios.delete(
+  //       `${BASE_URL}/device/delete/${deviceId}`,
 
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       }
+  //     );
 
-  const deleteDevice = async (deviceId) => {
-    console.log("deviceId",deviceId)
-    try {
-      const response = await axios.delete(
-        `${BASE_URL}/device/delete/${deviceId}`,
-        
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      
-      
-      // const data = response.data;
-      // console.log(data);
-      // setReports(data);
-      // setLoading(!loading);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     // const data = response.data;
+  //     // console.log(data);
+  //     // setReports(data);
+  //     // setLoading(!loading);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   return (
     <Box m="20px">

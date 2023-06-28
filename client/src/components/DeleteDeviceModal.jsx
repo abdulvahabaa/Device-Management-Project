@@ -7,9 +7,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 // import { setPosts } from "state/userState";
-import BASE_URL from "utils/BASE_URL";
+// import BASE_URL from "utils/BASE_URL";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -22,9 +22,9 @@ function DeleteDeviceModal({
   isRemove = false,
 }) {
   const [open, setOpen] = React.useState(false);
-  const token = useSelector((state) => state.userState.token);
-  const posts = useSelector((state) => state.userState.posts);
-  const dispatch = useDispatch();
+  // const token = useSelector((state) => state.userState.token);
+  // const posts = useSelector((state) => state.userState.posts);
+  // const dispatch = useDispatch();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -74,8 +74,14 @@ function DeleteDeviceModal({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} sx={{ backgroundColor: "blue", color: "white" }}>Disagree</Button>
-          <Button sx={{ backgroundColor: "green", color: "white" }}
+          <Button
+            onClick={handleClose}
+            sx={{ backgroundColor: "blue", color: "white" }}
+          >
+            Disagree
+          </Button>
+          <Button
+            sx={{ backgroundColor: "green", color: "white" }}
             onClick={() => {
               //   handleDelete();
               handleClose();

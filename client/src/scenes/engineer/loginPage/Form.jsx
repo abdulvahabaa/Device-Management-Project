@@ -49,15 +49,18 @@ const Form = () => {
     const userData = {
       name: values.name,
       email: values.email,
-      password: values.password
+      password: values.password,
     };
-  
+
     try {
-      const savedEngineerResponse = await axios.post(`${BASE_URL}/auth/signup`, userData);
+      const savedEngineerResponse = await axios.post(
+        `${BASE_URL}/auth/signup`,
+        userData
+      );
       console.log(savedEngineerResponse);
-  
+
       onSubmitProps.resetForm();
-  
+
       if (savedEngineerResponse) {
         setPageType("login");
       }
@@ -65,7 +68,6 @@ const Form = () => {
       console.error(error);
     }
   };
-  
 
   const login = async (values, onSubmitProps) => {
     const loggedInResponse = await axios.post(`${BASE_URL}/auth/login`, values);

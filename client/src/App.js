@@ -48,7 +48,7 @@ function App() {
               )}
 
               {isAdminAuth && isAdminPath && <AdminTopbar />}
-              
+
               <Routes>
                 <Route
                   path="/"
@@ -100,24 +100,40 @@ function App() {
                 <Route
                   path="/admin/production"
                   element={
-                    isAdminAuth ? <Production isAdmin /> : <Navigate to="/admin" />
+                    isAdminAuth ? (
+                      <Production isAdmin />
+                    ) : (
+                      <Navigate to="/admin" />
+                    )
                   }
                 />
                 <Route
                   path="/admin/live"
-                  element={isAdminAuth ? <Live isAdmin/> : <Navigate to="/admin" />}
+                  element={
+                    isAdminAuth ? <Live isAdmin /> : <Navigate to="/admin" />
+                  }
                 />
                 <Route
                   path="/admin/uncheacked"
-                  element={isAdminAuth ? <Uncheacked isAdmin /> : <Navigate to="/admin" />}
+                  element={
+                    isAdminAuth ? (
+                      <Uncheacked isAdmin />
+                    ) : (
+                      <Navigate to="/admin" />
+                    )
+                  }
                 />
 
                 <Route
                   path="/admin/dammageinfo"
-                  element={isAdminAuth ? <Dammageinfo isAdmin /> : <Navigate to="/admin" />}
+                  element={
+                    isAdminAuth ? (
+                      <Dammageinfo isAdmin />
+                    ) : (
+                      <Navigate to="/admin" />
+                    )
+                  }
                 />
-
-
               </Routes>
             </main>
           </div>

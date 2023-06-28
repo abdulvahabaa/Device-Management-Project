@@ -13,9 +13,8 @@ import { MenuItem, Menu } from "@mui/material";
 import { setMode, setLogout } from "state/engineerState";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
 import BASE_URL from "utils/BASE_URL";
-
 
 const Topbar = () => {
   const theme = useTheme();
@@ -24,6 +23,7 @@ const Topbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector((state) => state.userState.token);
+  const engineerId =useSelector((state)=>state.userState.engineer._id)
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -35,14 +35,19 @@ const Topbar = () => {
     setAnchorEl(null);
   };
 
-  const handleLogout = () => {
-    alert("haiiiii")
-    axios
-      .get(`${BASE_URL}/auth/logout`, {
+  const handleLogout = async () => {
+
+    try {
+      await axios.get(`${BASE_URL}/auth/logout`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
+      });
+    } catch (error) {
+      
+    }
+   
+  
 
     dispatch(setLogout());
     navigate("/");

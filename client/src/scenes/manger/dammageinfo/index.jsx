@@ -9,14 +9,15 @@ import { useEffect, useState } from "react";
 import BASE_URL from "utils/BASE_URL";
 import axios from "axios";
 
-const Dammageinfo = ({ isAdmin=false }) => {
+const Dammageinfo = ({ isAdmin = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   // const token = useSelector((state) => state.userState.token);
-  const adminToken =useSelector((state)=>state.adminState.adminToken)
+  const adminToken = useSelector((state) => state.adminState.adminToken);
   const [dammage, setDammage] = useState([]);
   const [rows, setRows] = useState([]);
 
+  console.log("adminToken", adminToken);
   useEffect(() => {
     axios
       .get(`${BASE_URL}/admin/dammageinfo`, {
@@ -31,51 +32,46 @@ const Dammageinfo = ({ isAdmin=false }) => {
       .catch((error) => {
         console.error(error);
       });
-
-     
   }, [adminToken]);
 
-
-
   useEffect(() => {
-      const setDammage = () => {
-        const newRows = dammage.map((dammage) => ({
-          
-          // id: `${dammage._id}-${index}`,
-          deviceId:dammage._id,
-          deviceName: dammage.deviceName,
-          deviceNumber: dammage.deviceNumber,
-          internalNumber: dammage.internalNumber,
-          engineer: dammage.engineer,
-          complaints: dammage.checks.map((check) => {
+    const setDammage = () => {
+      const newRows = dammage.map((dammage) => ({
+        // id: `${dammage._id}-${index}`,
+        deviceId: dammage._id,
+        deviceName: dammage.deviceName,
+        deviceNumber: dammage.deviceNumber,
+        internalNumber: dammage.internalNumber,
+        engineer: dammage.engineer,
+        complaints: dammage.checks
+          .map((check) => {
             const complaints = [];
-            if (check.mic === 'failed') {
-              complaints.push('Mic');
+            if (check.mic === "failed") {
+              complaints.push("Mic");
             }
-            if (check.camera === 'failed') {
-              complaints.push('Camera');
+            if (check.camera === "failed") {
+              complaints.push("Camera");
             }
-            if (check.sensor === 'failed') {
-              complaints.push('Sensor');
+            if (check.sensor === "failed") {
+              complaints.push("Sensor");
             }
             if (check.review) {
               complaints.push(`Review: ${check.review}`);
             }
 
-            
-            return complaints.join(', ');
+            return complaints.join(", ");
           })
-          .join(', '),
+          .join(", "),
       }));
-        setRows(newRows);
-      };
-    
-      setDammage();
-    }, [dammage]);
+      setRows(newRows);
+    };
+
+    setDammage();
+  }, [dammage]);
 
   const columns = [
     // { field: "id", headerName: "ID", flex: 0.5 },
-   
+
     {
       field: "deviceName",
       headerName: "Name",
@@ -85,7 +81,7 @@ const Dammageinfo = ({ isAdmin=false }) => {
     {
       field: "internalNumber",
       headerName: "Internal Number",
-      flex:1,
+      flex: 1,
       headerAlign: "left",
       align: "left",
     },
@@ -99,108 +95,38 @@ const Dammageinfo = ({ isAdmin=false }) => {
       headerName: "Complaints",
       flex: 3,
     },
-  
+
     {
       field: "dss",
       headerName: "Delete",
       flex: 1,
       renderCell: (params) => (
-        <Button onClick={() => {
-          deleteDevice(params.row.deviceId)
-          
-        }} variant="contained" sx={{color:"red"}}>
-         {params.row.status === true ? "notworked" : "DELETE"}
+        <Button
+          onClick={() => {
+            deleteDevice(params.row.deviceId);
+          }}
+          variant="contained"
+          sx={{ color: "red" }}
+        >
+          {params.row.status === true ? "notworked" : "DELETE"}
         </Button>
-        
       ),
-      
     },
-    // {
-    //   field: "status",
-    //   headerName: "Dammage Report",
-    //   flex: 1,
-    //   renderCell: (params) => (
-    //     <Button onClick={() => {
-    //       forwardtoDammage(params.row.deviceId)
-          
-    //     }} variant="contained" sx={{color:"red"}}>
-    //      {params.row.status === true ? "notworked" : "DAMMAGE"}
-    //     </Button>
-        
-    //   ),
-      
-    // },
-    // {
-    //   field: "statuss",
-    //   headerName: "Ready",
-    //   flex: 1,
-    //   renderCell: (params) => (
-    //     <Button onClick={() => {
-    //       forwardtoProduction(params.row.deviceId)
-          
-    //     }} variant="contained" sx={{color:"yellow"}}>
-    //      {params.row.status === true ? "notworked" : "Production"}
-    //     </Button>
-        
-    //   ),
-      
-    // },
+   
   ];
-
-  // const forwardtoProduction = async (deviceId) => {
-  //   console.log(deviceId)
-  //   try {
-  //     const response = await axios.patch(
-  //       `${BASE_URL}/device/toproduction`,
-  //       { deviceId },
-  //       {
-  //         headers: { Authorization: `Bearer ${adminToken}` },
-  //       }
-  //     );
-  
-  //     const data = response.data;
-  //     console.log(data);
-  //     // setReports(data);
-  //     // setLoading(!loading);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // const forwardtoDammage = async (deviceId) => {
-  //   console.log(deviceId)
-  //   try {
-  //     const response = await axios.patch(
-  //       `${BASE_URL}/device/todammage`,
-  //       { deviceId },
-  //       {
-  //         headers: { Authorization: `Bearer ${adminToken}` },
-  //       }
-  //     );
-  
-  //     const data = response.data;
-  //     console.log(data);
-  //     // setReports(data);
-  //     // setLoading(!loading);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
 
 
   const deleteDevice = async (deviceId) => {
-    console.log("deviceId",deviceId)
+    console.log("deviceId", deviceId);
     try {
       const response = await axios.delete(
         `${BASE_URL}/device/delete/${deviceId}`,
-        
+
         {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
       );
-      
-      
+
       // const data = response.data;
       // console.log(data);
       // setReports(data);

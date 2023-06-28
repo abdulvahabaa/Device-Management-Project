@@ -32,9 +32,7 @@ router.get("/maintenance", verifyToken, getMaintenance);
 
 router.get("/production", verifyToken, getProduction);
 
-router.get("/live",verifyToken, getLive);
-
-
+router.get("/live", verifyToken, getLive);
 
 // update
 
@@ -46,12 +44,10 @@ router.patch("/forwardmaitance", verifyToken, forwardToMaintanace);
 
 router.patch("/todammage", verifyToken, statusToDammage);
 
-router.put("/edit",verifyToken,updateDevice)
-
-
+router.put("/edit", verifyToken, updateDevice);
 
 // delete
 
-router.delete("/delete/:id",verifyToken, deleteDevice);
+router.delete("/delete/:id", verifyToken, deleteDevice);
 
 export default router;

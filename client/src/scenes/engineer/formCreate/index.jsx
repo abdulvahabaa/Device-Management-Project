@@ -38,10 +38,11 @@ const FormCreate = () => {
   const handleFormSubmit = async (values, onSubmitProps) => {
     console.log(values);
     console.log(engineer);
-    
+
     const data = { ...values, engineer };
-    data.deviceNumber = scannedResult.length >0 ? scannedResult : values.deviceNumber
-    
+    data.deviceNumber =
+      scannedResult.length > 0 ? scannedResult : values.deviceNumber;
+
     console.log(data);
 
     try {
@@ -54,7 +55,7 @@ const FormCreate = () => {
       onSubmitProps.resetForm();
     } catch (error) {
       console.log(error);
-      // Handle error appropriately
+    
     }
   };
 

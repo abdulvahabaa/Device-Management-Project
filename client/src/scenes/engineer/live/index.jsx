@@ -11,13 +11,13 @@ const Live = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const token = useSelector((state) => state.userState.token);
-  const adminToken = useSelector((state)=>state.adminState.adminToken)
+  const adminToken = useSelector((state) => state.adminState.adminToken);
 
   const [live, setLive] = useState([]);
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    const accessToken = token || adminToken
+    const accessToken = token || adminToken;
     // console.log("adminToken",adminToken)
     // console.log("accessToken",accessToken)
 
@@ -40,7 +40,7 @@ const Live = () => {
     const setLive = () => {
       const newRows = live.map((live) => ({
         // id: `${live._id}-${index}`,
-        deviceId:live._id,
+        deviceId: live._id,
         deviceName: live.deviceName,
         deviceNumber: live.deviceNumber,
         internalNumber: live.internalNumber,
@@ -49,12 +49,12 @@ const Live = () => {
       }));
       setRows(newRows);
     };
-  
+
     setLive();
   }, [live]);
 
   const columns = [
-    { field: "deviceId", headerName: "ID",flex: 1,},
+    { field: "deviceId", headerName: "ID", flex: 1 },
     {
       field: "deviceName",
       headerName: "Device Name",
@@ -71,21 +71,7 @@ const Live = () => {
       headerName: "Internal Numbr",
       flex: 1,
     },
-    // {
-    //   field: "cost",
-    //   headerName: "Cost",
-    //   flex: 1,
-    //   renderCell: (params) => (
-    //     <Typography color={colors.greenAccent[500]}>
-    //       ${params.row.cost}
-    //     </Typography>
-    //   ),
-    // },
-    // {
-    //   field: "date",
-    //   headerName: "Date",
-    //   flex: 1,
-    // },
+
   ];
 
   return (
@@ -120,7 +106,11 @@ const Live = () => {
           },
         }}
       >
-        <DataGrid rows={rows} columns={columns} getRowId={(row) => row.deviceId} />
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          getRowId={(row) => row.deviceId}
+        />
       </Box>
     </Box>
   );

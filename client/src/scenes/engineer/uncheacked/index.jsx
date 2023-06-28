@@ -10,23 +10,23 @@ import InitialCheackModal from "components/InitialCheackModal";
 import { Button, CardActionArea, CardActions } from "@mui/material";
 import { useSelector } from "react-redux";
 import DeleteDeviceModal from "components/DeleteDeviceModal";
-import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
-import EditModal from "components/EditDeviceModal";
+// import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
+
 import EditDeviceModal from "components/EditDeviceModal";
 
 const Uncheacked = () => {
   const token = useSelector((state) => state.userState.token);
   const engineer = useSelector((state) => state.userState.engineer);
   const engineerId = useSelector((state) => state.userState.engineer._id);
-  const [deviceId,setDeviceId]=React.useState("")
-  const [deviceName,setDeviceName]=React.useState("")
-  const [deviceNmumber,setDeviceNumber]=React.useState("")
-  const [internalNumber,setInternalNumber]=React.useState("")
+  const [deviceId, setDeviceId] = React.useState("");
+  const [deviceName, setDeviceName] = React.useState("");
+  const [deviceNmumber, setDeviceNumber] = React.useState("");
+  const [internalNumber, setInternalNumber] = React.useState("");
   const [uncheacked, setUnCheacked] = React.useState([]);
   const [isReport, setIsReport] = React.useState(false);
   const [isDelete, setIsDelete] = React.useState(false);
   const [isUpdate, setIsUpdate] = React.useState(false);
-  const [refetch,setRefetch] = React.useState(false)
+  const [refetch, setRefetch] = React.useState(false);
 
   // const ITEM_HEIGHT = 48;
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -57,7 +57,12 @@ const Uncheacked = () => {
     setDeviceId(deviceId);
   };
 
-  const handleEditDevice = (deviceId, deviceName, deviceNumber, internalNumber) => {
+  const handleEditDevice = (
+    deviceId,
+    deviceName,
+    deviceNumber,
+    internalNumber
+  ) => {
     setIsUpdate(true);
     setDeviceId(deviceId);
     setDeviceName(deviceName);
@@ -65,9 +70,8 @@ const Uncheacked = () => {
     setInternalNumber(internalNumber);
   };
 
-
   const handleRefresh = () => {
-    setRefetch(!refetch)
+    setRefetch(!refetch);
   };
 
   return (
@@ -94,24 +98,23 @@ const Uncheacked = () => {
           />
         )}
         {isDelete && (
-        <DeleteDeviceModal
-          setIsDelete={setIsDelete}
-          deviceId={deviceId}
-          isRemove={true}
-        />
-      )}
+          <DeleteDeviceModal
+            setIsDelete={setIsDelete}
+            deviceId={deviceId}
+            isRemove={true}
+          />
+        )}
         {isUpdate && (
-        <EditDeviceModal
-          setIsUpdate={setIsUpdate}
-          deviceId={deviceId}
-          deviceName={deviceName}
-          deviceNumber={deviceNmumber}
-          internalNumber={internalNumber}
-          isEdit={true}
-          handleRefresh={handleRefresh}
-        />
-      )}
-
+          <EditDeviceModal
+            setIsUpdate={setIsUpdate}
+            deviceId={deviceId}
+            deviceName={deviceName}
+            deviceNumber={deviceNmumber}
+            internalNumber={internalNumber}
+            isEdit={true}
+            handleRefresh={handleRefresh}
+          />
+        )}
 
         {uncheacked.map((item) => (
           <Card key={item._id} sx={{ maxWidth: 350 }}>
@@ -128,18 +131,19 @@ const Uncheacked = () => {
 
                 </IconButton> */}
 
-                <IconButton sx={{color:"yellow"}}
-                      onClick={() => {
-                        handleEditDevice(
-                          item._id,
-                          item.deviceName,
-                          item.deviceNumber,
-                          item.internalNumber
-                        );
-                        // handleClose();
-                      }} >
+                <IconButton
+                  sx={{ color: "yellow" }}
+                  onClick={() => {
+                    handleEditDevice(
+                      item._id,
+                      item.deviceName,
+                      item.deviceNumber,
+                      item.internalNumber
+                    );
+                    // handleClose();
+                  }}
+                >
                   <EditNoteOutlinedIcon />
-                  
                 </IconButton>
 
                 <Typography

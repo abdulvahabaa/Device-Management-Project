@@ -11,13 +11,12 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import { MenuItem, Menu } from "@mui/material";
 // import { setMode, setLogout } from "state/engineerState";
-import {setMode,setAdminLogout} from "state/adminState"
+import { setMode, setAdminLogout } from "state/adminState";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
 import BASE_URL from "utils/BASE_URL";
-
 
 const AdminTopbar = () => {
   const theme = useTheme();
@@ -38,13 +37,14 @@ const AdminTopbar = () => {
   };
 
   const handleLogout = () => {
+    
     // alert("haiiiii")
-    axios
-      .get(`${BASE_URL}/auth/logout`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+
+    // axios.get(`${BASE_URL}/auth/logout`, {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // });
 
     dispatch(setAdminLogout());
     navigate("/admin");
@@ -92,7 +92,9 @@ const AdminTopbar = () => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleLogout} sx={{coulor:"red"}}>Logout</MenuItem>
+          <MenuItem onClick={handleLogout} sx={{ coulor: "red" }}>
+            Logout
+          </MenuItem>
         </Menu>
       </Box>
     </Box>

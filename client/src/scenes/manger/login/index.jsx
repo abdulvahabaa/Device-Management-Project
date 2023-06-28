@@ -13,7 +13,7 @@ const LoginPageAdmin = () => {
         textAlign="center"
       >
         <Typography fontWeight="bold" fontSize="32px" color="red">
-         ADMIN LOGIN
+          ADMIN LOGIN
         </Typography>
       </Box>
 
@@ -25,10 +25,10 @@ const LoginPageAdmin = () => {
         backgroundColor={theme.palette.background.alt}
       >
         <Typography fontWeight="500" variant="h5" sx={{ mb: "1.5rem" }}>
-          Welcome to ADMIN 
+          Welcome to ADMIN
         </Typography>
         <Form />
-      </Box> 
+      </Box>
     </Box>
   );
 };

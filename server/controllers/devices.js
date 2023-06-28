@@ -100,7 +100,6 @@ export const statusToDammage = async (req, res) => {
   }
 };
 
-
 export const statusToProduction = async (req, res) => {
   console.log("function called...");
   console.log(req.body);
@@ -177,17 +176,24 @@ export const getEngineerDevices = async (req, res) => {
   }
 };
 
+
+
 export const updateDevice = async (req, res) => {
   try {
     const { deviceId, deviceName, deviceNumber, internalNumber } = req.body;
 
-    const updateDevice= await Device.findByIdAndUpdate(deviceId, {
+    // Check for empty values
+    if (!deviceName || !deviceNumber || !internalNumber) {
+      return res.status(400).json({ message: "All fields are required." });
+    }
+
+    const updateDevice = await Device.findByIdAndUpdate(deviceId, {
       deviceName: deviceName,
       deviceNumber: deviceNumber,
       internalNumber: internalNumber,
     });
 
-    console.log(updateDevice)
+    console.log(updateDevice);
 
     res.status(200).json({ message: "Device updated successfully" });
   } catch (err) {
@@ -196,20 +202,21 @@ export const updateDevice = async (req, res) => {
 };
 
 
+
 export const deleteDevice = async (req, res) => {
-  console.log("<<<>>>>>><<<<<<>>>>>")
-  console.log(req.params)
+  console.log("<<<>>>>>><<<<<<>>>>>");
+  console.log(req.params);
   try {
     const { id } = req.params;
     const device = await Device.findByIdAndDelete(id);
 
     if (!device) {
-      return res.status(404).json({ error: 'Device not found' });
+      return res.status(404).json({ error: "Device not found" });
     }
 
-    return res.status(200).json({ message: 'Device deleted successfully' });
+    return res.status(200).json({ message: "Device deleted successfully" });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };

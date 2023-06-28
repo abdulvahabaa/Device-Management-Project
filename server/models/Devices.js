@@ -8,40 +8,39 @@ const deviceSchema = mongoose.Schema(
     // },
     engineer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref:"Engineer",
+      ref: "Engineer",
       required: true,
     },
     deviceName: {
       type: String,
       required: true,
     },
-    deviceNumber:{
-        type:String,
-        requirerd:true,
-        unique: true,
-    },
-    internalNumber:{
-        type:Number,
-        requierd:true,
-        unique: true,
-    },
-    checks:{
-        type:Array,
-        default:[]
-    },
-    status:{
+    deviceNumber: {
       type: String,
-      default: false
+      requirerd: true,
+      unique: true,
+    },
+    internalNumber: {
+      type: Number,
+      requierd: true,
+      unique: true,
+    },
+    checks: {
+      type: Array,
+      default: [],
+    },
+    status: {
+      type: String,
+      default: false,
     },
     report: {
       type: Boolean,
-      default: false
+      default: false,
     },
     liveStatus: {
       type: Boolean,
-      default: false
+      default: false,
     },
-  
   },
   { timestamps: true }
 );

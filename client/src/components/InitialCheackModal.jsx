@@ -8,8 +8,8 @@ import {
   Modal,
   Radio,
   RadioGroup,
-  Slide,
-  Typography,
+  // Slide,
+  // Typography,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import BASE_URL from "utils/BASE_URL";
@@ -76,20 +76,18 @@ function InitialCheackModal({
     }
   };
 
-  const forwardToProducton = async()=>{
-    const data = {deviceId} 
-    console.log("deviceId",deviceId)
+  const forwardToProducton = async () => {
+    const data = { deviceId };
+    console.log("deviceId", deviceId);
 
     try {
-
       await axios.patch(`${BASE_URL}/device/toproduction`, data, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
     <Box sx={{ textAlign: "center" }}>
@@ -190,7 +188,7 @@ function InitialCheackModal({
               mt="2px"
               onClick={() => {
                 // console.log(data);
-                forwardToProducton()
+                forwardToProducton();
                 // handleReport();
                 handleClose();
                 // navigate('/');

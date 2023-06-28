@@ -5,7 +5,6 @@ const initialState = {
   engineer: null,
   token: null,
   devices: [],
-
 };
 
 export const authSlice = createSlice({
@@ -26,17 +25,9 @@ export const authSlice = createSlice({
       state.engineer = null;
       state.token = null;
     },
-   
   },
 });
 
-export const {
-  setMode,
-  setLogin,
-  setEngineer,
-  setLogout,
- 
- 
-} = authSlice.actions;
+export const { setMode, setLogin, setEngineer, setLogout } = authSlice.actions;
 
 export default authSlice.reducer;
