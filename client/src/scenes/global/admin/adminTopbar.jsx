@@ -11,12 +11,12 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import { MenuItem, Menu } from "@mui/material";
 // import { setMode, setLogout } from "state/engineerState";
-import { setMode, setAdminLogout } from "state/adminState";
+import { setAdminLogout } from "state/adminState";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import BASE_URL from "utils/BASE_URL";
+// import axios from "axios";
+// import BASE_URL from "utils/BASE_URL";
 
 const AdminTopbar = () => {
   const theme = useTheme();
@@ -24,7 +24,7 @@ const AdminTopbar = () => {
   const colorMode = useContext(ColorModeContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useSelector((state) => state.adminState.adminToken);
+  // const token = useSelector((state) => state.adminState.adminToken);
 
   const [anchorEl, setAnchorEl] = useState(null);
 

@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Box, Button, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 
 import Header from "../../../components/Header";
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import BASE_URL from "utils/BASE_URL";
 import { useSelector } from "react-redux";
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
-
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 const Production = ({ isAdmin = false }) => {
   const token = useSelector((state) => state.userState.token);
@@ -23,20 +16,6 @@ const Production = ({ isAdmin = false }) => {
 
   const [production, setProduction] = useState([]);
   const [rows, setRows] = useState([]);
-  const [reloadTrigger, setReloadTrigger] = useState(false); // State variable to trigger reload
-  const [open, setOpen] = React.useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpen(false);
-  };
 
   useEffect(() => {
     const accessToken = token || adminToken;
@@ -53,7 +32,7 @@ const Production = ({ isAdmin = false }) => {
       .catch((error) => {
         console.error(error);
       });
-  }, [token, adminToken]);
+  }, [token]);
 
   useEffect(() => {
     const getProductions = () => {
@@ -86,34 +65,12 @@ const Production = ({ isAdmin = false }) => {
 
       const data = response.data;
       console.log(data);
-      setReloadTrigger(true); // Trigger reload by setting the reloadTrigger state to true
+      // setReports(data);
+      // setLoading(!loading);
     } catch (error) {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    if (reloadTrigger) {
-      // Fetch data again when reloadTrigger becomes true
-      const accessToken = token || adminToken;
-      axios
-        .get(`${BASE_URL}/device/production`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          setProduction(res.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          setReloadTrigger(false); // Reset reloadTrigger back to false after reloading
-        });
-    }
-  }, [reloadTrigger, token, adminToken]);
 
   const columns = [
     {
@@ -139,7 +96,7 @@ const Production = ({ isAdmin = false }) => {
     },
     {
       field: "status",
-      headerName: "Device Status",
+      headerName: "Device Sataus",
       flex: 1,
     },
 
@@ -147,12 +104,11 @@ const Production = ({ isAdmin = false }) => {
       ? [
           {
             field: "Action",
-            headerName: "Move to Live",
+            headerName: "Action",
             renderCell: (params) => (
               <Button
                 onClick={() => {
                   forwardtoLive(params.row.deviceId);
-                  handleClick()
                 }}
                 variant="contained"
                 sx={{ color: "yellow" }}
@@ -198,9 +154,6 @@ const Production = ({ isAdmin = false }) => {
           "& .MuiCheckbox-root": {
             color: `${colors.greenAccent[200]} !important`,
           },
-          "& .MuiDataGrid-row": {
-            borderBottom: `1px solid ${colors.grey[300]}`,
-          },
         }}
       >
         <DataGrid
@@ -211,11 +164,6 @@ const Production = ({ isAdmin = false }) => {
           getRowId={(row) => row.deviceId}
         />
       </Box>
-      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          Device is Deployed successfully and Live now!
-        </Alert>
-        </Snackbar>
     </Box>
   );
 };

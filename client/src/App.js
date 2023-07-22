@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import AdminSidebar from "scenes/global/admin/adminSidebar";
 import AdminTopbar from "scenes/global/admin/adminTopbar";
 import Dammageinfo from "scenes/manger/dammageinfo";
+import AdminDashbord from "scenes/manger/adminDashboard";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -94,7 +95,7 @@ function App() {
                 <Route
                   path="/admin/home"
                   element={
-                    isAdminAuth ? <Dashboard /> : <Navigate to="/admin" />
+                    isAdminAuth ? <AdminDashbord /> : <Navigate to="/admin" />
                   }
                 />
                 <Route

@@ -11,7 +11,7 @@ import UnpublishedOutlinedIcon from "@mui/icons-material/UnpublishedOutlined";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
 import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -36,7 +36,7 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-  const engineer = useSelector((state) => state.userState.engineer);
+  // const engineer = useSelector((state) => state.userState.engineer);
 
   return (
     <Box

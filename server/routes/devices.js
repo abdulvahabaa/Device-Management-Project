@@ -24,7 +24,7 @@ router.post("/create", verifyToken, createDevice);
 
 // Read
 
-// router.get("/feed", verifyToken, getFeedDevices);
+router.get("/feed", verifyToken, getFeedDevices);
 
 router.get("/unchecked", verifyToken, getUnchecked);
 

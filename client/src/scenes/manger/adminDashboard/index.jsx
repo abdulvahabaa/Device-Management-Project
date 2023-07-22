@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import BASE_URL from "utils/BASE_URL";
 
-const Dashbord = () => {
+const AdminDashbord = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const token = useSelector((state) => state.userState.token);
@@ -33,7 +33,6 @@ const Dashbord = () => {
       })
       .catch((error) => {
         console.error(error);
-       
       });
   }, [token]);
 
@@ -130,4 +129,5 @@ const Dashbord = () => {
 
 
 
-export default Dashbord;
+export default AdminDashbord;
+

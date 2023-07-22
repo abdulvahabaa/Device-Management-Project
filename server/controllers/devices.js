@@ -33,6 +33,7 @@ export const getFeedDevices = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
+
 export const getMaintenance = async (req, res) => {
   try {
     const device = await Device.find({ status: "maintenance" });

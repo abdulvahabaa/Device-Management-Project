@@ -16,28 +16,29 @@ import EditDeviceModal from "components/EditDeviceModal";
 
 const Uncheacked = () => {
   const token = useSelector((state) => state.userState.token);
-  const engineer = useSelector((state) => state.userState.engineer);
-  const engineerId = useSelector((state) => state.userState.engineer._id);
+  // const engineer = useSelector((state) => state.userState.engineer);
+  // const engineerId = useSelector((state) => state.userState.engineer._id);
   const [deviceId, setDeviceId] = React.useState("");
   const [deviceName, setDeviceName] = React.useState("");
   const [deviceNmumber, setDeviceNumber] = React.useState("");
   const [internalNumber, setInternalNumber] = React.useState("");
   const [uncheacked, setUnCheacked] = React.useState([]);
   const [isReport, setIsReport] = React.useState(false);
+
   const [isDelete, setIsDelete] = React.useState(false);
   const [isUpdate, setIsUpdate] = React.useState(false);
   const [refetch, setRefetch] = React.useState(false);
 
   // const ITEM_HEIGHT = 48;
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+  // const open = Boolean(anchorEl);
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
 
   React.useEffect(() => {
     axios

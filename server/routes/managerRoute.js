@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.post("/login", adminLogin);
 
+// router.get("/home")
+
 router.get("/dammageinfo",verifyToken, getDammageinfo);
 
 // router.get("/logout",logout)

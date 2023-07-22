@@ -5,9 +5,15 @@ import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
 import { useTheme } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import BASE_URL from "utils/BASE_URL";
 import axios from "axios";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const Maintenance = ({ isAdmin = false }) => {
   const theme = useTheme();
@@ -15,6 +21,26 @@ const Maintenance = ({ isAdmin = false }) => {
   const token = useSelector((state) => state.userState.token);
   const [maintenance, setMaintenance] = useState([]);
   const [rows, setRows] = useState([]);
+  const [reload, setReload] = useState(false); // Add a state variable for reload
+  const [open, setOpen] = React.useState(false);
+  const [successMessage, setSuccessMessage] = React.useState("");
+
+  const handleSuccessAlert = (message) => {
+    setOpen(true);
+    setSuccessMessage(message);
+  };
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   useEffect(() => {
     axios
@@ -26,21 +52,22 @@ const Maintenance = ({ isAdmin = false }) => {
       .then((res) => {
         console.log(res);
         setMaintenance(res.data);
+        setReload(false); // Reset the reload state after data is fetched
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [token]);
+  }, [token, reload]); // Add the 'reload' state variable to the dependency array
 
   useEffect(() => {
-    const setMaintenance = () => {
+    const setMaintenanceData = () => {
       const newRows = maintenance.map((maintenance) => ({
-        // id: `${maintenance._id}-${index}`,
         deviceId: maintenance._id,
         deviceName: maintenance.deviceName,
         deviceNumber: maintenance.deviceNumber,
         internalNumber: maintenance.internalNumber,
         engineer: maintenance.engineer,
+        status: maintenance.status,
         complaints: maintenance.checks
           .map((check) => {
             const complaints = [];
@@ -64,12 +91,48 @@ const Maintenance = ({ isAdmin = false }) => {
       setRows(newRows);
     };
 
-    setMaintenance();
+    setMaintenanceData();
   }, [maintenance]);
 
-  const columns = [
-    // { field: "id", headerName: "ID", flex: 0.5 },
+  const forwardtoProduction = async (deviceId) => {
+    try {
+      const response = await axios.patch(
+        `${BASE_URL}/device/toproduction`,
+        { deviceId },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
+      console.log(response.data);
+
+      handleSuccessAlert("Device moved to Production successfully");
+      setReload(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const forwardtoDammage = async (deviceId) => {
+    try {
+      const response = await axios.patch(
+        `${BASE_URL}/device/todammage`,
+        { deviceId },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      console.log(response.data);
+
+      handleSuccessAlert("Device moved to Damage successfully");
+      setReload(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const columns = [
     {
       field: "deviceName",
       headerName: "Name",
@@ -89,34 +152,24 @@ const Maintenance = ({ isAdmin = false }) => {
       flex: 1,
     },
     {
+      field: "status",
+      headerName: "Device Status",
+      flex: 1,
+    },
+    {
       field: "complaints",
       headerName: "Complaints",
       flex: 3,
     },
-
-    // {
-    //   field: "dss",
-    //   headerName: "Delete",
-    //   flex: 1,
-    //   renderCell: (params) => (
-    //     <Button onClick={() => {
-    //       deleteDevice(params.row.deviceId)
-
-    //     }} variant="contained" sx={{color:"red"}}>
-    //      {params.row.status === true ? "notworked" : "DELETE"}
-    //     </Button>
-
-    //   ),
-
-    // },
     {
-      field: "status",
-      headerName: "Dammage Report",
-      flex: 1,
+      field: "dammage",
+      headerName: "Report as Dammage",
+      flex: 1.5,
       renderCell: (params) => (
         <Button
           onClick={() => {
             forwardtoDammage(params.row.deviceId);
+            handleClick();
           }}
           variant="contained"
           sx={{ color: "red" }}
@@ -126,13 +179,14 @@ const Maintenance = ({ isAdmin = false }) => {
       ),
     },
     {
-      field: "statuss",
-      headerName: "Ready",
-      flex: 1,
+      field: "production",
+      headerName: "Move to Production",
+      flex: 1.5,
       renderCell: (params) => (
         <Button
           onClick={() => {
             forwardtoProduction(params.row.deviceId);
+            handleClick();
           }}
           variant="contained"
           sx={{ color: "yellow" }}
@@ -142,66 +196,6 @@ const Maintenance = ({ isAdmin = false }) => {
       ),
     },
   ];
-
-  const forwardtoProduction = async (deviceId) => {
-    console.log(deviceId);
-    try {
-      const response = await axios.patch(
-        `${BASE_URL}/device/toproduction`,
-        { deviceId },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      const data = response.data;
-      console.log(data);
-      // setReports(data);
-      // setLoading(!loading);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const forwardtoDammage = async (deviceId) => {
-    console.log(deviceId);
-    try {
-      const response = await axios.patch(
-        `${BASE_URL}/device/todammage`,
-        { deviceId },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      const data = response.data;
-      console.log(data);
-      // setReports(data);
-      // setLoading(!loading);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // const deleteDevice = async (deviceId) => {
-  //   console.log("deviceId", deviceId);
-  //   try {
-  //     const response = await axios.delete(
-  //       `${BASE_URL}/device/delete/${deviceId}`,
-
-  //       {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       }
-  //     );
-
-  //     // const data = response.data;
-  //     // console.log(data);
-  //     // setReports(data);
-  //     // setLoading(!loading);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   return (
     <Box m="20px">
@@ -243,15 +237,20 @@ const Maintenance = ({ isAdmin = false }) => {
       >
         <DataGrid
           checkboxSelection
+          disableRowSelectionOnClick
           rows={rows}
           columns={columns}
           getRowId={(row) => row.deviceId}
-          disableRowSelectionOnClick
           components={{
             Toolbar: isAdmin ? GridToolbar : null,
           }}
         />
       </Box>
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          {successMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

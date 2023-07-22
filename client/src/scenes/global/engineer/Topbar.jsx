@@ -10,7 +10,7 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 
 import { MenuItem, Menu } from "@mui/material";
-import { setMode, setLogout } from "state/engineerState";
+import { setLogout } from "state/engineerState";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -23,7 +23,7 @@ const Topbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector((state) => state.userState.token);
-  const engineerId =useSelector((state)=>state.userState.engineer._id)
+  // const engineerId =useSelector((state)=>state.userState.engineer._id)
 
   const [anchorEl, setAnchorEl] = useState(null);
 

@@ -1,23 +1,21 @@
+import React, { useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
-
 import Header from "../../../components/Header";
 import { useTheme } from "@mui/material";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 import BASE_URL from "utils/BASE_URL";
 import axios from "axios";
 
 const Dammageinfo = ({ isAdmin = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  // const token = useSelector((state) => state.userState.token);
   const adminToken = useSelector((state) => state.adminState.adminToken);
   const [dammage, setDammage] = useState([]);
   const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  console.log("adminToken", adminToken);
   useEffect(() => {
     axios
       .get(`${BASE_URL}/admin/dammageinfo`, {
@@ -37,7 +35,6 @@ const Dammageinfo = ({ isAdmin = false }) => {
   useEffect(() => {
     const setDammage = () => {
       const newRows = dammage.map((dammage) => ({
-        // id: `${dammage._id}-${index}`,
         deviceId: dammage._id,
         deviceName: dammage.deviceName,
         deviceNumber: dammage.deviceNumber,
@@ -58,20 +55,44 @@ const Dammageinfo = ({ isAdmin = false }) => {
             if (check.review) {
               complaints.push(`Review: ${check.review}`);
             }
-
             return complaints.join(", ");
           })
           .join(", "),
       }));
       setRows(newRows);
     };
-
     setDammage();
   }, [dammage]);
 
-  const columns = [
-    // { field: "id", headerName: "ID", flex: 0.5 },
+  const deleteDevice = async (deviceId) => {
+    console.log("deviceId", deviceId);
+    try {
+      setLoading(true);
+      await axios.delete(`${BASE_URL}/device/delete/${deviceId}`, {
+        headers: { Authorization: `Bearer ${adminToken}` },
+      });
+      axios
+        .get(`${BASE_URL}/admin/dammageinfo`, {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          setDammage(res.data);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error(error);
+          setLoading(false);
+        });
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
 
+  const columns = [
     {
       field: "deviceName",
       headerName: "Name",
@@ -95,7 +116,6 @@ const Dammageinfo = ({ isAdmin = false }) => {
       headerName: "Complaints",
       flex: 3,
     },
-
     {
       field: "dss",
       headerName: "Delete",
@@ -112,29 +132,7 @@ const Dammageinfo = ({ isAdmin = false }) => {
         </Button>
       ),
     },
-   
   ];
-
-
-  const deleteDevice = async (deviceId) => {
-    console.log("deviceId", deviceId);
-    try {
-      const response = await axios.delete(
-        `${BASE_URL}/device/delete/${deviceId}`,
-
-        {
-          headers: { Authorization: `Bearer ${adminToken}` },
-        }
-      );
-
-      // const data = response.data;
-      // console.log(data);
-      // setReports(data);
-      // setLoading(!loading);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <Box m="20px">
@@ -178,7 +176,7 @@ const Dammageinfo = ({ isAdmin = false }) => {
           checkboxSelection
           rows={rows}
           columns={columns}
-          getRowId={(row) => row.deviceId}
+          getRowId={(row) => `${row.deviceId}-${loading}`}
           disableRowSelectionOnClick
           components={{
             Toolbar: isAdmin ? GridToolbar : null,

@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
@@ -46,6 +46,7 @@ const Live = () => {
         internalNumber: live.internalNumber,
         engineer: live.engineer,
         complaints: live.checks,
+        status:live.status,
       }));
       setRows(newRows);
     };
@@ -68,9 +69,15 @@ const Live = () => {
     },
     {
       field: "internalNumber",
-      headerName: "Internal Numbr",
+      headerName: "Internal Number",
       flex: 1,
     },
+    {
+      field: "status",
+      headerName: "Device Status",
+      flex: 1,
+    },
+
 
   ];
 
@@ -103,6 +110,9 @@ const Live = () => {
           },
           "& .MuiCheckbox-root": {
             color: `${colors.greenAccent[200]} !important`,
+          },
+          "& .MuiDataGrid-row": {
+            borderBottom: `1px solid ${colors.grey[300]}`,
           },
         }}
       >
