@@ -5,7 +5,6 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import dotenv from "dotenv";
-// import {signup} from "./controllers/auth.js"
 import authRoutes from "../server/routes/auth.js";
 import engineerRoutes from "./routes/engineers.js";
 import deviceRoutes from "./routes/devices.js";

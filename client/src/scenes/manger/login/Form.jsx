@@ -17,7 +17,6 @@ const initialValuesLogin = {
 };
 
 const Form = () => {
-  // const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -59,8 +58,6 @@ const Form = () => {
         handleBlur,
         handleChange,
         handleSubmit,
-        // setFieldValue,
-        // resetForm,
       }) => (
         <form onSubmit={handleSubmit}>
           <Box

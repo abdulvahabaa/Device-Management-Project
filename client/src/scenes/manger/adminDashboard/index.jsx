@@ -2,24 +2,25 @@ import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BASE_URL from "utils/BASE_URL";
+import { useNavigate } from "react-router-dom";
+import { setAdminLogout } from "state/adminState";
 
 const AdminDashbord = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const token = useSelector((state) => state.userState.token);
   const adminToken = useSelector((state) => state.adminState.adminToken);
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [dash, setDash] = useState([]);
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
     const accessToken = token || adminToken;
-    // console.log("adminToken",adminToken)
-    // console.log("accessToken",accessToken)
 
     axios
       .get(`${BASE_URL}/device/feed`, {
@@ -33,20 +34,24 @@ const AdminDashbord = () => {
       })
       .catch((error) => {
         console.error(error);
+        console.log(error.response.data.error);
+        if (error.response.data.error === "Access Token Expired") {
+          dispatch(setAdminLogout());
+          navigate("/admin");
+        }
       });
-  }, [token]);
+  }, [adminToken, navigate]);
 
   useEffect(() => {
     const setDash = () => {
       const newRows = dash.map((dash) => ({
-        // id: `${live._id}-${index}`,
         deviceId: dash._id,
         deviceName: dash.deviceName,
         deviceNumber: dash.deviceNumber,
         internalNumber: dash.internalNumber,
         engineer: dash.engineer,
         complaints: dash.checks,
-        status:dash.status,
+        status: dash.status,
       }));
       setRows(newRows);
     };
@@ -77,13 +82,14 @@ const AdminDashbord = () => {
       headerName: "Device Status",
       flex: 1,
     },
-
-
   ];
 
   return (
     <Box m="20px">
-      <Header title="Dashboard" subtitle="List of All devices and its Current Staus" />
+      <Header
+        title="Admin Dashboard"
+        subtitle="List of All devices and its Current Staus"
+      />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -126,8 +132,4 @@ const AdminDashbord = () => {
   );
 };
 
-
-
-
 export default AdminDashbord;
-

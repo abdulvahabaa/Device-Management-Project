@@ -71,7 +71,11 @@ export const forwardToMaintanace = async (req, res) => {
       return res.status(404).json({ message: "Device not found" });
     }
     console.log(device);
-    res.status(200).json(device);
+
+    const deviceData = await Device.find({ status: "false" });
+    console.log(deviceData);
+
+    res.status(200).json(deviceData);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -119,7 +123,11 @@ export const statusToProduction = async (req, res) => {
       return res.status(404).json({ message: "Device not found" });
     }
     console.log(device);
-    res.status(200).json(device);
+
+    const deviceData = await Device.find({ status: "false" });
+    console.log(deviceData);
+
+    res.status(200).json(deviceData);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -177,8 +185,6 @@ export const getEngineerDevices = async (req, res) => {
   }
 };
 
-
-
 export const updateDevice = async (req, res) => {
   try {
     const { deviceId, deviceName, deviceNumber, internalNumber } = req.body;
@@ -201,8 +207,6 @@ export const updateDevice = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
-
-
 
 export const deleteDevice = async (req, res) => {
   console.log("<<<>>>>>><<<<<<>>>>>");

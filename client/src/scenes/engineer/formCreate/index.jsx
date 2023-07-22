@@ -64,9 +64,8 @@ const FormCreate = () => {
       });
 
       onSubmitProps.resetForm();
-      // setSuccess(true);
       setScannedResult(""); // Reset scannedResult after successful form submission
-      handleClick()
+      handleClick();
     } catch (error) {
       console.log(error);
     }
@@ -84,115 +83,110 @@ const FormCreate = () => {
   return (
     <Box m="20px">
       <Header title="ADD DEVICE" subtitle="Add a New Device into Inventory" />
-      <Box sx={{display:'flex'}}>
-   
-
-
-      <Box bgcolor="#9B9B9B" p="20px">
-
-        <Typography>fill this form to create a new Device</Typography>
-        <Formik
-          onSubmit={handleFormSubmit}
-          initialValues={initialValues}
-          validationSchema={checkoutSchema}
-        >
-          {({
-            values,
-            errors,
-            touched,
-            handleBlur,
-            handleChange,
-            handleSubmit,
-            resetForm,
-          }) => (
-            <form onSubmit={handleSubmit}>
-              <Box
-                display="grid"
-                gap="30px"
-                gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-                sx={{
-                  "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-                }}
-              >
-                
-                <TextField
-                  fullWidth
-                  variant="filled"
-                  type="text"
-                  label="Device Name"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.deviceName}
-                  name="deviceName"
-                  error={!!touched.deviceName && !!errors.deviceName}
-                  helperText={touched.deviceName && errors.deviceName}
-                  sx={{ gridColumn: "span 4" }}
-                />
-
-                <TextField
-                  fullWidth
-                  variant="filled"
-                  type="text"
-                  label="Device Number"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={scannedResult || values.deviceNumber}
-                  name="deviceNumber"
-                  error={!!touched.deviceNumber && !!errors.deviceNumber}
-                  helperText={touched.deviceNumber && errors.deviceNumber}
-                  sx={{ gridColumn: "span 3" }}
-                />
-              
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  onClick={handleQRScanOpen}
+      <Box sx={{ display: "flex" }}>
+        <Box bgcolor="#9B9B9B" p="20px">
+          <Typography>fill this form to create a new Device</Typography>
+          <Formik
+            onSubmit={handleFormSubmit}
+            initialValues={initialValues}
+            validationSchema={checkoutSchema}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleBlur,
+              handleChange,
+              handleSubmit,
+              resetForm,
+            }) => (
+              <form onSubmit={handleSubmit}>
+                <Box
+                  display="grid"
+                  gap="30px"
+                  gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+                  sx={{
+                    "& > div": {
+                      gridColumn: isNonMobile ? undefined : "span 4",
+                    },
+                  }}
                 >
-                  QR Scan
-                </Button>
-
-              
-
-                <TextField
-                  fullWidth
-                  variant="filled"
-                  type="number"
-                  label="Internal Number"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.internalNumber}
-                  name="internalNumber"
-                  error={!!touched.internalNumber && !!errors.internalNumber}
-                  helperText={touched.internalNumber && errors.internalNumber}
-                  sx={{ gridColumn: "span 4" }}
-                />
-              </Box>
-              <Box display="flex" justifyContent="center" mt="30px">
-                <Button
-                  type="submit"
-                  color="secondary"
-                  variant="contained"
-                  // onClick={handleClick}
-                >
-                  Create New Device
-                </Button>
-              </Box>
-            </form>
-          )}
-        </Formik>
-      </Box>
-      <Box ml="30px">
-      {scanOpen && scanning && (
-                  <QrReader
-                    delay={100}
-                    style={previewStyle}
-                    onError={handleError}
-                    onScan={handleScan}
+                  <TextField
+                    fullWidth
+                    variant="filled"
+                    type="text"
+                    label="Device Name"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.deviceName}
+                    name="deviceName"
+                    error={!!touched.deviceName && !!errors.deviceName}
+                    helperText={touched.deviceName && errors.deviceName}
+                    sx={{ gridColumn: "span 4" }}
                   />
-                )}
+
+                  <TextField
+                    fullWidth
+                    variant="filled"
+                    type="text"
+                    label="Device Number"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={scannedResult || values.deviceNumber}
+                    name="deviceNumber"
+                    error={!!touched.deviceNumber && !!errors.deviceNumber}
+                    helperText={touched.deviceNumber && errors.deviceNumber}
+                    sx={{ gridColumn: "span 3" }}
+                  />
+
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                    onClick={handleQRScanOpen}
+                  >
+                    QR Scan
+                  </Button>
+
+                  <TextField
+                    fullWidth
+                    variant="filled"
+                    type="number"
+                    label="Internal Number"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values.internalNumber}
+                    name="internalNumber"
+                    error={!!touched.internalNumber && !!errors.internalNumber}
+                    helperText={touched.internalNumber && errors.internalNumber}
+                    sx={{ gridColumn: "span 4" }}
+                  />
                 </Box>
+                <Box display="flex" justifyContent="center" mt="30px">
+                  <Button type="submit" color="secondary" variant="contained">
+                    Create New Device
+                  </Button>
+                </Box>
+              </form>
+            )}
+          </Formik>
+        </Box>
+        <Box ml="30px">
+          {scanOpen && scanning && (
+            <QrReader
+              delay={100}
+              style={previewStyle}
+              onError={handleError}
+              onScan={handleScan}
+            />
+          )}
+        </Box>
       </Box>
-      <Snackbar open={open} autoHideDuration={2000} onClose={handleClose} onExited={handleReload}>
+      <Snackbar
+        open={open}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        onExited={handleReload}
+      >
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
           New Device Added Successfully!
         </Alert>

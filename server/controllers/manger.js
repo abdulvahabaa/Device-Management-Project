@@ -8,8 +8,6 @@ dotenv.config();
 
 export const adminLogin = async (req, res) => {
   try {
-    console.log("?????????????????????????");
-    console.log(req.body);
     const { email, password } = req.body;
     if (
       email === process.env.ADMIN_EMAIL &&
@@ -26,8 +24,6 @@ export const adminLogin = async (req, res) => {
 };
 
 export const getDammageinfo = async (req, res) => {
-  // console.lgo("called dammage info>>>>")
-
   try {
     const device = await Device.find({ status: "dammage" });
     res.status(200).json(device);
@@ -35,5 +31,3 @@ export const getDammageinfo = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
-
-

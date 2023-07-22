@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
-
+import { useNavigate } from "react-router-dom";
+import { setLogout } from "state/engineerState";
 import Header from "../../../components/Header";
-// import { useEffect, useState } from "react";
 import axios from "axios";
 import BASE_URL from "utils/BASE_URL";
-import { useSelector } from "react-redux";
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert from '@mui/material/Alert';
+import { useDispatch, useSelector } from "react-redux";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -20,7 +20,8 @@ const Production = ({ isAdmin = false }) => {
   const adminToken = useSelector((state) => state.adminState.adminToken);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [production, setProduction] = useState([]);
   const [rows, setRows] = useState([]);
   const [reloadTrigger, setReloadTrigger] = useState(false); // State variable to trigger reload
@@ -31,7 +32,7 @@ const Production = ({ isAdmin = false }) => {
   };
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -52,20 +53,23 @@ const Production = ({ isAdmin = false }) => {
       })
       .catch((error) => {
         console.error(error);
+        console.log(error.response.data.error);
+        if (error.response.data.error === "Access Token Expired") {
+          dispatch(setLogout());
+          navigate("/");
+        }
       });
-  }, [token, adminToken]);
+  }, [token, adminToken, navigate]);
 
   useEffect(() => {
     const getProductions = () => {
       const newRows = production.map((production) => ({
-        // id: `${production._id}-${index}`,
         deviceId: production._id,
         deviceName: production.deviceName,
         deviceNumber: production.deviceNumber,
         internalNumber: production.internalNumber,
         engineer: production.engineer,
         status: production.status,
-        // accessLevel: production.accessLevel,
       }));
       setRows(newRows);
     };
@@ -152,7 +156,7 @@ const Production = ({ isAdmin = false }) => {
               <Button
                 onClick={() => {
                   forwardtoLive(params.row.deviceId);
-                  handleClick()
+                  handleClick();
                 }}
                 variant="contained"
                 sx={{ color: "yellow" }}
@@ -212,10 +216,10 @@ const Production = ({ isAdmin = false }) => {
         />
       </Box>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
           Device is Deployed successfully and Live now!
         </Alert>
-        </Snackbar>
+      </Snackbar>
     </Box>
   );
 };

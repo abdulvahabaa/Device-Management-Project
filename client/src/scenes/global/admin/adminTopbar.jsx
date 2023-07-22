@@ -8,15 +8,10 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-
 import { MenuItem, Menu } from "@mui/material";
-// import { setMode, setLogout } from "state/engineerState";
 import { setAdminLogout } from "state/adminState";
-
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import axios from "axios";
-// import BASE_URL from "utils/BASE_URL";
 
 const AdminTopbar = () => {
   const theme = useTheme();
@@ -24,8 +19,6 @@ const AdminTopbar = () => {
   const colorMode = useContext(ColorModeContext);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const token = useSelector((state) => state.adminState.adminToken);
-
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -37,15 +30,6 @@ const AdminTopbar = () => {
   };
 
   const handleLogout = () => {
-    
-    // alert("haiiiii")
-
-    // axios.get(`${BASE_URL}/auth/logout`, {
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // });
-
     dispatch(setAdminLogout());
     navigate("/admin");
     handleClose();
@@ -53,7 +37,6 @@ const AdminTopbar = () => {
 
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
-      {/* SEARCH BAR */}
       <Box
         display="flex"
         backgroundColor={colors.primary[400]}
@@ -64,8 +47,6 @@ const AdminTopbar = () => {
           <SearchIcon />
         </IconButton>
       </Box>
-
-      {/* ICONS */}
       <Box display="flex">
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
@@ -80,10 +61,6 @@ const AdminTopbar = () => {
         <IconButton>
           <SettingsOutlinedIcon />
         </IconButton>
-        {/* <IconButton >
-          <PersonOutlinedIcon />
-        </IconButton> */}
-
         <IconButton color="red" onClick={handleClick}>
           <PersonOutlinedIcon />
         </IconButton>

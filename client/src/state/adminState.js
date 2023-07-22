@@ -4,9 +4,6 @@ const initialState = {
   adminMode: "dark",
   admin: null,
   adminToken: null,
-  // dashboard:{usersCount:null,postsCount:null,reportsCount:null}
-  // posts: [],
-  // communities:[],
 };
 
 export const authSlice = createSlice({

@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
 import { useTheme } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import BASE_URL from "utils/BASE_URL";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { setAdminLogout } from "state/adminState";
+import DeleteConfirmationModal from "../../../components/DeleteDeviceModal";
 
 const Dammageinfo = ({ isAdmin = false }) => {
   const theme = useTheme();
@@ -15,6 +25,10 @@ const Dammageinfo = ({ isAdmin = false }) => {
   const [dammage, setDammage] = useState([]);
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [selectedDeviceId, setSelectedDeviceId] = useState(null);
 
   useEffect(() => {
     axios
@@ -29,8 +43,13 @@ const Dammageinfo = ({ isAdmin = false }) => {
       })
       .catch((error) => {
         console.error(error);
+        console.log(error.response.data.error);
+        if (error.response.data.error === "Access Token Expired") {
+          dispatch(setAdminLogout());
+          navigate("/admin");
+        }
       });
-  }, [adminToken]);
+  }, [adminToken, navigate]);
 
   useEffect(() => {
     const setDammage = () => {
@@ -123,7 +142,8 @@ const Dammageinfo = ({ isAdmin = false }) => {
       renderCell: (params) => (
         <Button
           onClick={() => {
-            deleteDevice(params.row.deviceId);
+            setSelectedDeviceId(params.row.deviceId);
+            setOpenDeleteModal(true);
           }}
           variant="contained"
           sx={{ color: "red" }}
@@ -183,6 +203,15 @@ const Dammageinfo = ({ isAdmin = false }) => {
           }}
         />
       </Box>
+      {/* Add the DeleteConfirmationModal component */}
+      <DeleteConfirmationModal
+        open={openDeleteModal}
+        onClose={() => setOpenDeleteModal(false)}
+        onConfirm={() => {
+          deleteDevice(selectedDeviceId);
+          setOpenDeleteModal(false);
+        }}
+      />
     </Box>
   );
 };

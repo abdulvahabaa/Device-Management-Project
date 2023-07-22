@@ -37,14 +37,12 @@ const Production = ({ isAdmin = false }) => {
   useEffect(() => {
     const getProductions = () => {
       const newRows = production.map((production) => ({
-        // id: `${production._id}-${index}`,
         deviceId: production._id,
         deviceName: production.deviceName,
         deviceNumber: production.deviceNumber,
         internalNumber: production.internalNumber,
         engineer: production.engineer,
         status: production.status,
-        // accessLevel: production.accessLevel,
       }));
       setRows(newRows);
     };
@@ -65,8 +63,6 @@ const Production = ({ isAdmin = false }) => {
 
       const data = response.data;
       console.log(data);
-      // setReports(data);
-      // setLoading(!loading);
     } catch (error) {
       console.error(error);
     }

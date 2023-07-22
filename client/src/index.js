@@ -19,7 +19,6 @@ import storage from "redux-persist/lib/storage";
 import { PersistGate } from "redux-persist/integration/react";
 
 const persistConfig = { key: "root", storage, version: 1 };
-// const persistedReducer = persistReducer(persistConfig, reducer);
 const persistedReducer = combineReducers({
   userState: persistReducer(persistConfig, engineerReducer),
   adminState: persistReducer(persistConfig, adminReducer),
@@ -39,10 +38,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistStore(store)}>
-        {/* <ProSidebarProvider> */}
-
         <App />
-        {/* </ProSidebarProvider> */}
       </PersistGate>
     </Provider>
   </React.StrictMode>

@@ -8,37 +8,24 @@ import axios from "axios";
 import BASE_URL from "utils/BASE_URL";
 import InitialCheackModal from "components/InitialCheackModal";
 import { Button, CardActionArea, CardActions } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DeleteDeviceModal from "components/DeleteDeviceModal";
-// import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
-
+import { useNavigate } from "react-router-dom";
+import { setLogout } from "state/engineerState";
 import EditDeviceModal from "components/EditDeviceModal";
 
 const Uncheacked = () => {
   const token = useSelector((state) => state.userState.token);
-  // const engineer = useSelector((state) => state.userState.engineer);
-  // const engineerId = useSelector((state) => state.userState.engineer._id);
   const [deviceId, setDeviceId] = React.useState("");
   const [deviceName, setDeviceName] = React.useState("");
   const [deviceNmumber, setDeviceNumber] = React.useState("");
   const [internalNumber, setInternalNumber] = React.useState("");
   const [uncheacked, setUnCheacked] = React.useState([]);
   const [isReport, setIsReport] = React.useState(false);
-
-  const [isDelete, setIsDelete] = React.useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isUpdate, setIsUpdate] = React.useState(false);
   const [refetch, setRefetch] = React.useState(false);
-
-  // const ITEM_HEIGHT = 48;
-  // const [anchorEl, setAnchorEl] = React.useState(null);
-  // const open = Boolean(anchorEl);
-  // const handleClick = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
 
   React.useEffect(() => {
     axios
@@ -50,8 +37,16 @@ const Uncheacked = () => {
       .then((res) => {
         console.log(res);
         setUnCheacked(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        console.log(error.response.data.error);
+        if (error.response.data.error === "Access Token Expired") {
+          dispatch(setLogout());
+          navigate("/");
+        }
       });
-  }, [refetch]);
+  }, [refetch, navigate]);
 
   const handleInitialCheck = (deviceId) => {
     setIsReport(true);
@@ -96,13 +91,7 @@ const Uncheacked = () => {
             deviceId={deviceId}
             isReported={true}
             handleRefresh={handleRefresh}
-          />
-        )}
-        {isDelete && (
-          <DeleteDeviceModal
-            setIsDelete={setIsDelete}
-            deviceId={deviceId}
-            isRemove={true}
+            setUnCheacked={setUnCheacked}
           />
         )}
         {isUpdate && (
@@ -121,17 +110,6 @@ const Uncheacked = () => {
           <Card key={item._id} sx={{ maxWidth: 350 }}>
             <CardActionArea>
               <CardContent>
-                {/* <IconButton sx={{color:"red"}}
-                      onClick={() => {
-                        setDeviceId(item._id)
-                        setIsDelete(true);
-                        
-                        handleClose();
-                      }} >
-                  <DeleteSweepIcon />
-
-                </IconButton> */}
-
                 <IconButton
                   sx={{ color: "yellow" }}
                   onClick={() => {
@@ -141,7 +119,6 @@ const Uncheacked = () => {
                       item.deviceNumber,
                       item.internalNumber
                     );
-                    // handleClose();
                   }}
                 >
                   <EditNoteOutlinedIcon />

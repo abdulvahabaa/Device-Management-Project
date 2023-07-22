@@ -8,7 +8,6 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import SearchIcon from "@mui/icons-material/Search";
-
 import { MenuItem, Menu } from "@mui/material";
 import { setLogout } from "state/engineerState";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,8 +22,6 @@ const Topbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector((state) => state.userState.token);
-  // const engineerId =useSelector((state)=>state.userState.engineer._id)
-
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -36,7 +33,6 @@ const Topbar = () => {
   };
 
   const handleLogout = async () => {
-
     try {
       await axios.get(`${BASE_URL}/auth/logout`, {
         headers: {
@@ -44,10 +40,8 @@ const Topbar = () => {
         },
       });
     } catch (error) {
-      
+      console.log(error);
     }
-   
-  
 
     dispatch(setLogout());
     navigate("/");
@@ -56,7 +50,6 @@ const Topbar = () => {
 
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
-      {/* SEARCH BAR */}
       <Box
         display="flex"
         backgroundColor={colors.primary[400]}
@@ -68,7 +61,6 @@ const Topbar = () => {
         </IconButton>
       </Box>
 
-      {/* ICONS */}
       <Box display="flex">
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
@@ -83,10 +75,6 @@ const Topbar = () => {
         <IconButton>
           <SettingsOutlinedIcon />
         </IconButton>
-        {/* <IconButton >
-          <PersonOutlinedIcon />
-        </IconButton> */}
-
         <IconButton onClick={handleClick}>
           <PersonOutlinedIcon />
         </IconButton>

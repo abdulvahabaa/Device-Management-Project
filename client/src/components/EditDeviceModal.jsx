@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-// import * as React from 'react';
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-// import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
@@ -21,11 +19,8 @@ function EditDeviceModal({
   internalNumber,
   isEdit = false,
   handleRefresh,
-  // postUserId,
 }) {
   const [open, setOpen] = React.useState(false);
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const token = useSelector((state) => state.userState.token);
@@ -69,12 +64,10 @@ function EditDeviceModal({
     } catch (error) {
       console.error(error);
     }
-    // setPost("");
   };
 
   return (
     <div>
-     
       <Dialog
         fullScreen={fullScreen}
         open={open}
@@ -82,7 +75,6 @@ function EditDeviceModal({
           setIsUpdate(false);
           handleClose();
         }}
-        // onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
@@ -96,7 +88,6 @@ function EditDeviceModal({
         <DialogContent>
           <TextField
             fullWidth
-            // variant="filled"
             type="text"
             label="Device Name"
             value={deviceNam}
@@ -114,7 +105,6 @@ function EditDeviceModal({
           />
           <TextField
             fullWidth
-            // variant="filled"
             type="text"
             label="Device Number"
             value={deviceNumb}
@@ -132,7 +122,6 @@ function EditDeviceModal({
           />
           <TextField
             fullWidth
-            // variant="filled"
             type="Number"
             label="Internal Number"
             value={internalNumb}

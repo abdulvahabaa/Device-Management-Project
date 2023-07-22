@@ -2,24 +2,25 @@ import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BASE_URL from "utils/BASE_URL";
+import { useNavigate } from "react-router-dom";
+import { setLogout } from "state/engineerState";
 
 const Live = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const token = useSelector((state) => state.userState.token);
   const adminToken = useSelector((state) => state.adminState.adminToken);
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [live, setLive] = useState([]);
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
     const accessToken = token || adminToken;
-    // console.log("adminToken",adminToken)
-    // console.log("accessToken",accessToken)
 
     axios
       .get(`${BASE_URL}/device/live`, {
@@ -33,20 +34,24 @@ const Live = () => {
       })
       .catch((error) => {
         console.error(error);
+        console.log(error.response.data.error);
+        if (error.response.data.error === "Access Token Expired") {
+          dispatch(setLogout());
+          navigate("/");
+        }
       });
-  }, [token]);
+  }, [token, navigate]);
 
   useEffect(() => {
     const setLive = () => {
       const newRows = live.map((live) => ({
-        // id: `${live._id}-${index}`,
         deviceId: live._id,
         deviceName: live.deviceName,
         deviceNumber: live.deviceNumber,
         internalNumber: live.internalNumber,
         engineer: live.engineer,
         complaints: live.checks,
-        status:live.status,
+        status: live.status,
       }));
       setRows(newRows);
     };
@@ -77,8 +82,6 @@ const Live = () => {
       headerName: "Device Status",
       flex: 1,
     },
-
-
   ];
 
   return (

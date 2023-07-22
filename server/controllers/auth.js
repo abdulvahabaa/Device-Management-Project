@@ -28,7 +28,6 @@ export const signup = async (req, res) => {
   }
 };
 
-
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -43,7 +42,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ msg: "Invalid Engineer Credentials..." });
 
     const token = jwt.sign({ id: engineer._id }, process.env.JWT_SECRET, {
-      expiresIn: '10h' // Set the expiry time for 1 hour (can be adjusted as needed)
+      expiresIn: "10h", // Set the expiry time for 1 hour (can be adjusted as needed)
     });
 
     // Remove password field from the engineer object
@@ -56,14 +55,11 @@ export const login = async (req, res) => {
   }
 };
 
-
-
 export const logout = async (req, res) => {
   console.log("<<<<<<<>Logout<<<<<>>>>>>");
   try {
     const token = req.headers.authorization.split(" ")[1];
-    console.log(token);
-
+    
     // Decode the token
     const decoded = jwt.decode(token);
 
@@ -86,7 +82,7 @@ export const logout = async (req, res) => {
       await revokedTokenDoc.save();
     }
 
-    console.log(revokedTokenDoc);
+    // console.log(revokedTokenDoc);
 
     res.status(200).json({ msg: "Logged out successfully." });
   } catch (err) {

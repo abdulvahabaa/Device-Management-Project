@@ -8,13 +8,10 @@ import {
   Modal,
   Radio,
   RadioGroup,
-  // Slide,
-  // Typography,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import BASE_URL from "utils/BASE_URL";
 import axios from "axios";
-// import { reportPost } from 'api/users';
 
 const style = {
   position: "absolute",
@@ -34,12 +31,10 @@ function InitialCheackModal({
   setIsReport,
   deviceId,
   postUserId,
+  setUnCheacked,
 }) {
-  // const dispatch = useDispatch();
-  // const user = useSelector((state) => state.userState.user);
   const token = useSelector((state) => state.userState.token);
   const [data, setData] = useState({});
-  // const [content, setContent] = useState("");
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -68,9 +63,14 @@ function InitialCheackModal({
   const forwardToMaintanance = async () => {
     const formData = { deviceId, ...data };
     try {
-      await axios.patch(`${BASE_URL}/device/forwardmaitance`, formData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios
+        .patch(`${BASE_URL}/device/forwardmaitance`, formData, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          console.log(res);
+          setUnCheacked(res.data);
+        });
     } catch (error) {
       console.error(error);
     }
@@ -81,9 +81,14 @@ function InitialCheackModal({
     console.log("deviceId", deviceId);
 
     try {
-      await axios.patch(`${BASE_URL}/device/toproduction`, data, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios
+        .patch(`${BASE_URL}/device/toproduction`, data, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          console.log(res);
+          setUnCheacked(res.data);
+        });
     } catch (error) {
       console.error(error);
     }
@@ -175,7 +180,6 @@ function InitialCheackModal({
                 setData({ ...data, [e.target.name]: e.target.value })
               }
               name="review"
-              // value={postContent}
               placeholder="write something!!"
             />
           </FormControl>
@@ -187,11 +191,8 @@ function InitialCheackModal({
               bgcolour="blue"
               mt="2px"
               onClick={() => {
-                // console.log(data);
                 forwardToProducton();
-                // handleReport();
                 handleClose();
-                // navigate('/');
               }}
             >
               Redy for production
@@ -202,10 +203,7 @@ function InitialCheackModal({
               color="secondary"
               onClick={() => {
                 forwardToMaintanance();
-
-                // handleReport();
                 handleClose();
-                // navigate('/');
               }}
             >
               Forward to Maintainance

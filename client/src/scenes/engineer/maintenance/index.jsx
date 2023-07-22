@@ -1,10 +1,11 @@
 import { Box, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
-
+import { useNavigate } from "react-router-dom";
+import { setLogout } from "state/engineerState";
 import Header from "../../../components/Header";
 import { useTheme } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import BASE_URL from "utils/BASE_URL";
 import axios from "axios";
@@ -24,6 +25,8 @@ const Maintenance = ({ isAdmin = false }) => {
   const [reload, setReload] = useState(false); // Add a state variable for reload
   const [open, setOpen] = React.useState(false);
   const [successMessage, setSuccessMessage] = React.useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSuccessAlert = (message) => {
     setOpen(true);
@@ -56,8 +59,13 @@ const Maintenance = ({ isAdmin = false }) => {
       })
       .catch((error) => {
         console.error(error);
+        console.log(error.response.data.error);
+        if (error.response.data.error === "Access Token Expired") {
+          dispatch(setLogout());
+          navigate("/");
+        }
       });
-  }, [token, reload]); // Add the 'reload' state variable to the dependency array
+  }, [token, reload, navigate]); // Add the 'reload' state variable to the dependency array
 
   useEffect(() => {
     const setMaintenanceData = () => {

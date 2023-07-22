@@ -7,15 +7,12 @@ import { tokens } from "../../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import BeenhereOutlinedIcon from "@mui/icons-material/BeenhereOutlined";
-// import UnpublishedOutlinedIcon from "@mui/icons-material/UnpublishedOutlined";
-// import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
 import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
-// import { useSelector } from "react-redux";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);  
+  const colors = tokens(theme.palette.mode);
   return (
     <MenuItem
       active={selected === title}
@@ -36,7 +33,6 @@ const AdminSidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-  // const engineer = useSelector((state) => state.userState.engineer);
 
   return (
     <Box
@@ -60,7 +56,6 @@ const AdminSidebar = () => {
     >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
-          {/* LOGO AND MENU ICON */}
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
@@ -106,9 +101,10 @@ const AdminSidebar = () => {
                 >
                   Manager
                 </Typography>
-                <Typography variant="h5" color={colors.greenAccent[500]}>
-                  {/* {engineer.name} */}
-                </Typography>
+                <Typography
+                  variant="h5"
+                  color={colors.greenAccent[500]}
+                ></Typography>
               </Box>
             </Box>
           )}
@@ -136,20 +132,6 @@ const AdminSidebar = () => {
             >
               Device
             </Typography>
-            {/* <Item
-              title="create Device"
-              to="/create"
-              icon={<AddBoxOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
-            {/* <Item
-              title="uncheked Devices "
-              to="/admin/uncheacked"
-              icon={<UnpublishedOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
             <Item
               title="Dammage info"
               to="/admin/dammageinfo"
@@ -165,58 +147,6 @@ const AdminSidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-
-            {/* <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Pages
-            </Typography> */}
-
-            {/* <Item
-              title="FAQ Page"
-              to="/faq"
-              icon={<HelpOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
-
-            {/* <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Charts
-            </Typography>
-            <Item
-              title="Bar Chart"
-              to="/bar"
-              icon={<BarChartOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Pie Chart"
-              to="/pie"
-              icon={<PieChartOutlineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Line Chart"
-              to="/line"
-              icon={<TimelineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Geography Chart"
-              to="/geography"
-              icon={<MapOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
           </Box>
         </Menu>
       </ProSidebar>
