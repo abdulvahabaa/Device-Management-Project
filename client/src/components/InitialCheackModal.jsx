@@ -9,7 +9,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import BASE_URL from "utils/BASE_URL";
 import axios from "axios";
 

@@ -17,6 +17,7 @@ import AdminSidebar from "scenes/global/admin/adminSidebar";
 import AdminTopbar from "scenes/global/admin/adminTopbar";
 import Dammageinfo from "scenes/manger/dammageinfo";
 import AdminDashbord from "scenes/manger/adminDashboard";
+import AdminLive from "scenes/manger/adminLive";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -110,20 +111,9 @@ function App() {
                 <Route
                   path="/admin/live"
                   element={
-                    isAdminAuth ? <Live isAdmin /> : <Navigate to="/admin" />
+                    isAdminAuth ? <AdminLive isAdmin /> : <Navigate to="/admin" />
                   }
                 />
-                <Route
-                  path="/admin/uncheacked"
-                  element={
-                    isAdminAuth ? (
-                      <Uncheacked isAdmin />
-                    ) : (
-                      <Navigate to="/admin" />
-                    )
-                  }
-                />
-
                 <Route
                   path="/admin/dammageinfo"
                   element={

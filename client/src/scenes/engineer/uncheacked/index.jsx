@@ -9,7 +9,6 @@ import BASE_URL from "utils/BASE_URL";
 import InitialCheackModal from "components/InitialCheackModal";
 import { Button, CardActionArea, CardActions } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import DeleteDeviceModal from "components/DeleteDeviceModal";
 import { useNavigate } from "react-router-dom";
 import { setLogout } from "state/engineerState";
 import EditDeviceModal from "components/EditDeviceModal";
